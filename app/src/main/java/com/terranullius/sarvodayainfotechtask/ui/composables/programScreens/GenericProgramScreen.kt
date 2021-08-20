@@ -17,6 +17,7 @@ import com.terranullius.sarvodayainfotechtask.util.Program
 @Composable
 fun GenericProgramScreen(
     program: Program,
+    modifier: Modifier = Modifier,
     onDone: () -> String,
     content: @Composable () -> Unit
 ) {
@@ -25,7 +26,7 @@ fun GenericProgramScreen(
         mutableStateOf("")
     }
 
-    Column {
+    Column(modifier) {
 
         Spacer(modifier = Modifier.height(12.dp))
 

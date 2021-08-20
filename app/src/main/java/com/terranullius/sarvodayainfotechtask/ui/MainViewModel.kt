@@ -24,6 +24,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val currentUser: StateFlow<Resource<User>>
         get() = _currentUser
 
+    private val _navigateLoginToMainScreen = MutableStateFlow(Event(false))
+    val navigateLoginToMainScreen: StateFlow<Event<Boolean>>
+    get() = _navigateLoginToMainScreen
+
     private val userDao =
         Room.databaseBuilder(app, AppDatabase::class.java, DATABASE_NAME).build().getUserDao()
 
@@ -64,6 +68,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             } else {
                 if (user.password == password) {
                     _currentUser.value = Resource.Success(user)
+                    _navigateLoginToMainScreen.value = Event(true)
                 } else {
                     _currentUser.value = Resource.Error(Event("Invalid Password"))
                 }

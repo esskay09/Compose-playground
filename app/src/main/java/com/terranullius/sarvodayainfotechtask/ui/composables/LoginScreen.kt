@@ -45,11 +45,22 @@ fun LoginScreen(
                         ?.let {msg->
                             context.showToast(msg)
                         }
-                    is Resource.Success -> navController.navigate(Screen.MainScreen.route)
+                    is Resource.Success -> {
+//                        navController.navigate(Screen.MainScreen.route)
+                    }
                     else -> Unit
                 }
             }
         }
+
+        launch {
+            viewModel.navigateLoginToMainScreen.collectLatest {
+                it.getContentIfNotHandled()?.let {
+                   if (it) navController.navigate(Screen.MainScreen.route)
+                }
+            }
+        }
+
     }
 
     var isContinuable = remember {
