@@ -9,12 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,10 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.terranullius.sarvodayainfotechtask.data.User
 import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
+import com.terranullius.sarvodayainfotechtask.ui.composables.programScreens.SumProgramScreen
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.buttonHeight
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
+import com.terranullius.sarvodayainfotechtask.util.Program
 import com.terranullius.sarvodayainfotechtask.util.Resource
+import com.terranullius.sarvodayainfotechtask.util.Screen
 import com.terranullius.sarvodayainfotechtask.util.programList
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
@@ -60,46 +59,67 @@ fun MainScreenSuccessContent(
     navController: NavHostController,
     viewModel: MainViewModel? = null
 ) {
-    Column(modifier = modifier) {
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
+    )
 
-        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-            bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        )
+    var selectedProgram by remember {
+        mutableStateOf(programList[0])
+    }
 
-        var selectedProgram by remember {
-            mutableStateOf(programList[0].name)
-        }
-        
-        BottomSheetScaffold(sheetContent = {
-            when(selectedProgram){
+    BottomSheetScaffold(
+        scaffoldState = bottomSheetScaffoldState,
+        sheetContent = {
+        BottomSheetContent(selectedProgram = selectedProgram)
+    }) {
 
+            val coroutineScope = rememberCoroutineScope()
+
+            Column(modifier = modifier.padding(it)) {
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            ProfileComposable(
+                name = user.name,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                //TODO UPDATE PROFILE
             }
-        }) {
 
-        }
+            LazyColumn(Modifier.fillMaxSize()) {
 
-        Spacer(modifier = Modifier.height(18.dp))
+                itemsIndexed(
+                    programList
+                ) { index, item ->
 
-        ProfileComposable(
-            name = user.name,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            //TODO UPDATE PROFILE
-        }
-
-        LazyColumn(Modifier.fillMaxSize()) {
-
-            itemsIndexed(
-                programList
-            ){ index, item ->
-
-                ProgramItem(name = item.name, onClick = {
-                    //TODO
-                })
+                    ProgramItem(name = item.screen.route, onClick = {
+                        //TODO
+                        selectedProgram = item
+                        coroutineScope.launch {
+                            bottomSheetScaffoldState.bottomSheetState.expand()
+                        }
+                    })
+                }
             }
+        }
+
+
+    }
+}
+
+@Composable
+fun BottomSheetContent(selectedProgram: Program) {
+    when(selectedProgram.screen){
+        Screen.Sum -> {
+            SumProgramScreen(selectedProgram)
+        }
+        else ->{
+
         }
     }
 }
+
+
 
 @Composable
 fun ProgramItem(
