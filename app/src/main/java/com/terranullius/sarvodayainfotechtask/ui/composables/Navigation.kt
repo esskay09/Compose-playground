@@ -15,7 +15,7 @@ fun Navigation(modifier: Modifier = Modifier, viewModel: MainViewModel) {
     val navController = rememberNavController()
 
     NavHost(
-        navController =navController,
+        navController = navController,
         startDestination = Screen.Login.route,
         modifier = modifier
     ){
@@ -26,7 +26,7 @@ fun Navigation(modifier: Modifier = Modifier, viewModel: MainViewModel) {
             RegisterScreen(Modifier.fillMaxSize(), null, navController, viewModel)
         }
         composable(Screen.MainScreen.route){
-            MainScreen(Modifier.fillMaxSize(), navController)
+            MainScreen(Modifier.fillMaxSize(), navController, viewModel)
         }
     }
 }

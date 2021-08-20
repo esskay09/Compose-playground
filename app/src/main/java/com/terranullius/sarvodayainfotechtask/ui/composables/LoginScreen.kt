@@ -23,6 +23,7 @@ import com.terranullius.sarvodayainfotechtask.util.Resource
 import com.terranullius.sarvodayainfotechtask.util.Screen
 import com.terranullius.sarvodayainfotechtask.util.showToast
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -38,7 +39,7 @@ fun LoginScreen(
     LaunchedEffect(key1 = Unit) {
 
         launch {
-            viewModel.currentUser.collect {
+            viewModel.currentUser.collectLatest {
                 when (it) {
                     is Resource.Error -> it.msg.getContentIfNotHandled()
                         ?.let {msg->
@@ -149,10 +150,10 @@ fun LoginScreen(
 }
 
 private fun validateFields(phoneNumberOrEmail: String, password: String, context: Context): Boolean {
-    return if (phoneNumberOrEmail.isEmpty()) {
+    return if (phoneNumberOrEmail.isBlank()) {
         context.showToast("Please enter your email/number")
         false
-    } else if (password.isEmpty()) {
+    } else if (password.isBlank()) {
         context.showToast("Please enter your password")
         false
     } else true

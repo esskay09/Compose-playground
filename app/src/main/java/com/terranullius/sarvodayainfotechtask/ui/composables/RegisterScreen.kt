@@ -22,6 +22,7 @@ import com.terranullius.sarvodayainfotechtask.ui.composables.components.TaskButt
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.SarvodayaInfotechTaskTheme
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.buttonHeight
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
+import com.terranullius.sarvodayainfotechtask.util.Screen
 import com.terranullius.sarvodayainfotechtask.util.showToast
 
 @androidx.compose.runtime.Composable
@@ -120,7 +121,8 @@ fun RegisterScreen(
                         password,
                         confirmPassword,
                         context,
-                        viewModel = viewModel!!
+                        viewModel = viewModel!!,
+                        navController
                     )
                 }) {
                 Text(text = "REGISTER")
@@ -138,7 +140,8 @@ fun register(
     password: String,
     confirmPassword: String,
     context: Context,
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    navController: NavHostController
 ) {
     if (validateFields(
             name = name,
@@ -149,15 +152,18 @@ fun register(
             context = context
         )
     ) {
-
         viewModel.register(
             name = name,
             email = email,
             phoneNumber = phoneNumber,
             password = password,
         )
-
+        navigateMainScreen(navController)
     }
+}
+
+private fun navigateMainScreen(navController: NavHostController) {
+    navController.navigate(Screen.MainScreen.route)
 }
 
 private fun validateFields(
