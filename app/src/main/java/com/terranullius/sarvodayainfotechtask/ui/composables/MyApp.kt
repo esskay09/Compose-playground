@@ -2,6 +2,7 @@ package com.terranullius.sarvodayainfotechtask.ui.composables
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.SarvodayaInfotechTaskTheme
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.mainPadding
 
+@ExperimentalMaterialApi
 @Composable
 fun MyApp(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 

@@ -4,25 +4,31 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.terranullius.sarvodayainfotechtask.data.User
 import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
-import com.terranullius.sarvodayainfotechtask.ui.composables.theme.SarvodayaInfotechTaskTheme
+import com.terranullius.sarvodayainfotechtask.ui.composables.theme.buttonHeight
+import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
 import com.terranullius.sarvodayainfotechtask.util.Resource
+import com.terranullius.sarvodayainfotechtask.util.programList
 
+@ExperimentalMaterialApi
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
@@ -46,6 +52,7 @@ fun MainScreen(
 
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun MainScreenSuccessContent(
     modifier: Modifier = Modifier,
@@ -54,6 +61,22 @@ fun MainScreenSuccessContent(
     viewModel: MainViewModel? = null
 ) {
     Column(modifier = modifier) {
+
+        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+            bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
+        )
+
+        var selectedProgram by remember {
+            mutableStateOf(programList[0].name)
+        }
+        
+        BottomSheetScaffold(sheetContent = {
+            when(selectedProgram){
+
+            }
+        }) {
+
+        }
 
         Spacer(modifier = Modifier.height(18.dp))
 
@@ -66,7 +89,37 @@ fun MainScreenSuccessContent(
 
         LazyColumn(Modifier.fillMaxSize()) {
 
+            itemsIndexed(
+                programList
+            ){ index, item ->
+
+                ProgramItem(name = item.name, onClick = {
+                    //TODO
+                })
+            }
         }
+    }
+}
+
+@Composable
+fun ProgramItem(
+    modifier: Modifier = Modifier,
+    name: String,
+    onClick: (String) -> Unit
+) {
+    Column(modifier = modifier) {
+
+        Button(
+            modifier =
+            Modifier
+                .height(buttonHeight)
+                .fillMaxWidth(),
+            onClick = {
+                onClick(name)
+            }) {
+            Text(text = name)
+        }
+        Spacer(modifier = Modifier.height(textFieldsSpace))
     }
 }
 
@@ -88,13 +141,5 @@ fun ProfileComposable(
                 .clip(CircleShape)
         )
         Text(text = "Welcome $name", Modifier.align(Alignment.CenterHorizontally))
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPrev() {
-    SarvodayaInfotechTaskTheme() {
-        MainScreen(modifier = Modifier.fillMaxSize(), navController = rememberNavController())
     }
 }
