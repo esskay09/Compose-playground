@@ -1,0 +1,138 @@
+package com.terranullius.sarvodayainfotechtask.ui.composables
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavHostController
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieDrawable
+import com.terranullius.sarvodayainfotechtask.R
+import com.terranullius.sarvodayainfotechtask.ui.composables.components.EditTextField
+import com.terranullius.sarvodayainfotechtask.ui.composables.components.PhoneNumberField
+import com.terranullius.sarvodayainfotechtask.ui.composables.components.TaskButton
+import com.terranullius.sarvodayainfotechtask.ui.composables.theme.lightBlueHeadline
+import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
+import com.terranullius.sarvodayainfotechtask.util.Screen
+
+
+@Composable
+fun LoginScreen(navController: NavHostController?, modifier: Modifier = Modifier) {
+
+
+    var isContinuable = remember {
+        mutableStateOf(false)
+    }
+    var phoneNumberOrEmail by remember {
+        mutableStateOf("")
+    }
+
+    var password by remember {
+        mutableStateOf("")
+    }
+
+    Column(modifier) {
+        AndroidView(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+            factory = {
+                LottieAnimationView(it).apply {
+                    setAnimation(R.raw.login)
+                    repeatCount = LottieDrawable.INFINITE
+                    repeatMode = LottieDrawable.RESTART
+                }
+            }
+        ) {
+            it.playAnimation()
+        }
+
+        Column(
+            Modifier
+                .fillMaxSize()
+        ) {
+
+            Text(
+                text = "LOGIN", style = MaterialTheme.typography.h6.copy(
+                    color = lightBlueHeadline
+                )
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = "Enter your phone number to proceed")
+            Spacer(modifier = Modifier.height(24.dp))
+
+            EditTextField(
+                modifier = Modifier.fillMaxWidth(),
+                label = {
+                        Text(text = "Email/Phone")
+                },
+                value = phoneNumberOrEmail,
+                onValueChange = {
+                    phoneNumberOrEmail = it
+                }) {
+
+            }
+            EditTextField(
+                modifier = Modifier.fillMaxWidth(),
+                label = {
+                        Text(text = "Password")
+                },
+                value = password,
+                onValueChange = {
+                    password = it
+                }) {
+                //TODO LOGIN
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+            TaskButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(35.dp),
+                onClick = {
+                    /*
+                    * navController Null only in previews
+                    * */
+
+                    login(phoneNumberOrEmail.toString(), navController!!)
+                }
+            ) {
+                Text(text = "LOGIN")
+            }
+            Spacer(modifier = Modifier.height(textFieldsSpace))
+            TaskButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(35.dp),
+                onClick = {
+                    /*
+                    * navController Null only in previews
+                    * */
+
+                    navigateRegister(navController!!)
+                }
+            ) {
+                Text(text = "REGISTER")
+            }
+        }
+    }
+}
+
+fun navigateRegister(navController: NavHostController) {
+    navController.navigate(Screen.Register.route)
+}
+
+
+fun login(number: String, navHostController: NavHostController) {
+    navHostController.navigate(Screen.MainScreen.route)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun loginPrev() {
+    LoginScreen(navController = null, modifier = Modifier.fillMaxSize())
+}
