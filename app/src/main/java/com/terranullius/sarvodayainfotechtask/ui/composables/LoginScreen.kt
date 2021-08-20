@@ -1,11 +1,13 @@
 package com.terranullius.sarvodayainfotechtask.ui.composables
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
@@ -17,17 +19,37 @@ import com.terranullius.sarvodayainfotechtask.ui.composables.components.EditText
 import com.terranullius.sarvodayainfotechtask.ui.composables.components.TaskButton
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.lightBlueHeadline
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
+import com.terranullius.sarvodayainfotechtask.util.Resource
 import com.terranullius.sarvodayainfotechtask.util.Screen
+import com.terranullius.sarvodayainfotechtask.util.showToast
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController?,
+    navController: NavHostController,
     modifier: Modifier = Modifier,
     viewModel: MainViewModel
 ) {
 
-    var currentUser = viewModel.currentUser.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = Unit) {
+
+        launch {
+            viewModel.currentUser.collect {
+                when (it) {
+                    is Resource.Error -> it.msg.getContentIfNotHandled()
+                        ?.let {msg->
+                            context.showToast(msg)
+                        }
+                    is Resource.Success -> navController.navigate(Screen.MainScreen.route)
+                    else -> Unit
+                }
+            }
+        }
+    }
 
     var isContinuable = remember {
         mutableStateOf(false)
@@ -73,7 +95,7 @@ fun LoginScreen(
             EditTextField(
                 modifier = Modifier.fillMaxWidth(),
                 label = {
-                        Text(text = "Email/Phone")
+                    Text(text = "Email/Phone")
                 },
                 value = phoneNumberOrEmail,
                 onValueChange = {
@@ -84,13 +106,13 @@ fun LoginScreen(
             EditTextField(
                 modifier = Modifier.fillMaxWidth(),
                 label = {
-                        Text(text = "Password")
+                    Text(text = "Password")
                 },
                 value = password,
                 onValueChange = {
                     password = it
                 }) {
-                //TODO LOGIN
+                login(phoneNumberOrEmail, password, viewModel, context)
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -102,8 +124,7 @@ fun LoginScreen(
                     /*
                     * navController Null only in previews
                     * */
-
-                    login(phoneNumberOrEmail, navController!!)
+                    login(phoneNumberOrEmail, password, viewModel, context)
                 }
             ) {
                 Text(text = "LOGIN")
@@ -118,7 +139,7 @@ fun LoginScreen(
                     * navController Null only in previews
                     * */
 
-                    navigateRegister(navController!!)
+                    navigateRegister(navController)
                 }
             ) {
                 Text(text = "REGISTER")
@@ -127,18 +148,24 @@ fun LoginScreen(
     }
 }
 
+private fun validateFields(phoneNumberOrEmail: String, password: String, context: Context): Boolean {
+    return if (phoneNumberOrEmail.isEmpty()) {
+        context.showToast("Please enter your email/number")
+        false
+    } else if (password.isEmpty()) {
+        context.showToast("Please enter your password")
+        false
+    } else true
+}
+
 fun navigateRegister(navController: NavHostController) {
     navController.navigate(Screen.Register.route)
 }
 
 
-fun login(number: String, navHostController: NavHostController) {
-
-    navHostController.navigate(Screen.MainScreen.route)
+private fun login(emailOrPhone: String, password: String, viewModel: MainViewModel, context: Context) {
+    if (validateFields(emailOrPhone, password, context)) {
+        viewModel.login(emailOrPhone, password)
+    }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun loginPrev() {
-    LoginScreen(navController = null, modifier = Modifier.fillMaxSize())
-}

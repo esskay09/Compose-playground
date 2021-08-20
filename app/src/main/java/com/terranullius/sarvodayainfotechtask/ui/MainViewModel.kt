@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.terranullius.bhoomicabs.util.Event
 import com.terranullius.sarvodayainfotechtask.data.AppDatabase
 import com.terranullius.sarvodayainfotechtask.data.User
 import com.terranullius.sarvodayainfotechtask.util.Constants.DATABASE_NAME
@@ -26,12 +27,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val userDao =
         Room.databaseBuilder(app, AppDatabase::class.java, DATABASE_NAME).build().getUserDao()
 
-    fun insertUpdateUser(user: User) {
-        viewModelScope.launch {
+    private suspend fun insertUpdateUser(user: User) {
             withContext(IO) {
                 userDao.insertUpdateUser(user)
             }
-        }
     }
 
     private suspend fun getUserByNumberOrEmail(emailOrPhone: String): User? {
@@ -61,14 +60,29 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val user = getUserByNumberOrEmail(emailOrPhone)
 
             if (user == null) {
-                _currentUser.value = Resource.Error("No user found")
+                _currentUser.value = Resource.Error(Event("No user found"))
             } else {
                 if (user.password == password) {
                     _currentUser.value = Resource.Success(user)
                 } else {
-                    _currentUser.value = Resource.Error("Invalid Password")
+                    _currentUser.value = Resource.Error(Event("Invalid Password"))
                 }
             }
+        }
+    }
+
+    fun register(name: String, email: String, phoneNumber: String, password: String) {
+
+        val user = User(
+            name = name,
+            email = email,
+            number = phoneNumber,
+            gender = "",
+            password = password
+        )
+
+        viewModelScope.launch {
+            insertUpdateUser(user)
         }
     }
 }

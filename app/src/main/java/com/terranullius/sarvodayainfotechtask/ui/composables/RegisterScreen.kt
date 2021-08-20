@@ -1,5 +1,7 @@
 package com.terranullius.sarvodayainfotechtask.ui.composables
 
+import android.app.Application
+import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -7,20 +9,31 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.terranullius.sarvodayainfotechtask.data.User
+import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
 import com.terranullius.sarvodayainfotechtask.ui.composables.components.EditTextField
 import com.terranullius.sarvodayainfotechtask.ui.composables.components.TaskButton
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.SarvodayaInfotechTaskTheme
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.buttonHeight
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
+import com.terranullius.sarvodayainfotechtask.util.showToast
 
 @androidx.compose.runtime.Composable
-fun RegisterScreen(modifier: Modifier = Modifier, user: User? = null, navController: NavHostController?= null) {
+fun RegisterScreen(
+    modifier: Modifier = Modifier,
+    user: User? = null,
+    navController: NavHostController,
+    viewModel: MainViewModel?
+) {
     Column(modifier) {
+
+        val context = LocalContext.current
 
         var isContinuable = remember {
             mutableStateOf(false)
@@ -95,11 +108,21 @@ fun RegisterScreen(modifier: Modifier = Modifier, user: User? = null, navControl
 
             Spacer(modifier = Modifier.height(50.dp))
             TaskButton(
-                modifier = Modifier.height(buttonHeight).fillMaxWidth(),
+                modifier = Modifier
+                    .height(buttonHeight)
+                    .fillMaxWidth(),
                 isContinuable = isContinuable,
                 onClick = {
-                //TODO
-            }) {
+                    register(
+                        name,
+                        email,
+                        phoneNumber,
+                        password,
+                        confirmPassword,
+                        context,
+                        viewModel = viewModel!!
+                    )
+                }) {
                 Text(text = "REGISTER")
             }
 
@@ -108,12 +131,63 @@ fun RegisterScreen(modifier: Modifier = Modifier, user: User? = null, navControl
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun RegisterPrev() {
-    SarvodayaInfotechTaskTheme() {
-        RegisterScreen(Modifier.fillMaxSize())
+fun register(
+    name: String,
+    email: String,
+    phoneNumber: String,
+    password: String,
+    confirmPassword: String,
+    context: Context,
+    viewModel: MainViewModel
+) {
+    if (validateFields(
+            name = name,
+            email = email,
+            phoneNumber = phoneNumber,
+            password = password,
+            confirmPassword = confirmPassword,
+            context = context
+        )
+    ) {
+
+        viewModel.register(
+            name = name,
+            email = email,
+            phoneNumber = phoneNumber,
+            password = password,
+        )
+
     }
+}
+
+private fun validateFields(
+    name: String,
+    email: String,
+    phoneNumber: String,
+    password: String,
+    confirmPassword: String,
+    context: Context,
+): Boolean {
+    return when {
+        isAnyArgEmpty(name, email, password, confirmPassword, phoneNumber) -> {
+            context.showToast("Please enter all the fields")
+            false
+        }
+        password != confirmPassword -> {
+            context.showToast("Passwords do not match")
+            false
+        }
+        else -> true
+    }
+}
+
+fun isAnyArgEmpty(vararg arg: String): Boolean {
+    arg.forEach {
+        if (it.isBlank()) {
+            return true
+        }
+    }
+    return false
 }
 
 @Composable
@@ -147,5 +221,14 @@ fun RegisterItem(
         ) {
             onDone()
         }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun RegisterPrev() {
+    SarvodayaInfotechTaskTheme() {
+        RegisterScreen(Modifier.fillMaxSize(), navController = rememberNavController(), viewModel = null)
     }
 }
