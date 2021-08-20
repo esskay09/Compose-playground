@@ -6,10 +6,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
 import com.terranullius.sarvodayainfotechtask.util.Screen
 
 @Composable
-fun Navigation(modifier: Modifier = Modifier) {
+fun Navigation(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 
     val navController = rememberNavController()
 
@@ -19,7 +20,7 @@ fun Navigation(modifier: Modifier = Modifier) {
         modifier = modifier
     ){
         composable(Screen.Login.route){
-            LoginScreen(navController, Modifier.fillMaxSize())
+            LoginScreen(navController, Modifier.fillMaxSize(), viewModel)
         }
         composable(Screen.Register.route){
             RegisterScreen(Modifier.fillMaxSize(), null, navController)

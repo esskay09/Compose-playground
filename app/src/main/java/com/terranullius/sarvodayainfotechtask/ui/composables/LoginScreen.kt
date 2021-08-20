@@ -12,8 +12,8 @@ import androidx.navigation.NavHostController
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieDrawable
 import com.terranullius.sarvodayainfotechtask.R
+import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
 import com.terranullius.sarvodayainfotechtask.ui.composables.components.EditTextField
-import com.terranullius.sarvodayainfotechtask.ui.composables.components.PhoneNumberField
 import com.terranullius.sarvodayainfotechtask.ui.composables.components.TaskButton
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.lightBlueHeadline
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
@@ -21,8 +21,13 @@ import com.terranullius.sarvodayainfotechtask.util.Screen
 
 
 @Composable
-fun LoginScreen(navController: NavHostController?, modifier: Modifier = Modifier) {
+fun LoginScreen(
+    navController: NavHostController?,
+    modifier: Modifier = Modifier,
+    viewModel: MainViewModel
+) {
 
+    var currentUser = viewModel.currentUser.collectAsState()
 
     var isContinuable = remember {
         mutableStateOf(false)
@@ -98,7 +103,7 @@ fun LoginScreen(navController: NavHostController?, modifier: Modifier = Modifier
                     * navController Null only in previews
                     * */
 
-                    login(phoneNumberOrEmail.toString(), navController!!)
+                    login(phoneNumberOrEmail, navController!!)
                 }
             ) {
                 Text(text = "LOGIN")
@@ -128,6 +133,7 @@ fun navigateRegister(navController: NavHostController) {
 
 
 fun login(number: String, navHostController: NavHostController) {
+
     navHostController.navigate(Screen.MainScreen.route)
 }
 

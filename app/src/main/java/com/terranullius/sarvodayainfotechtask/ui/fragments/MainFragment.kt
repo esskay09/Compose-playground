@@ -8,9 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
 import com.terranullius.sarvodayainfotechtask.ui.composables.MyApp
 
 class MainFragment: Fragment() {
+
+    private val viewModel by viewModels<MainViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -18,7 +23,7 @@ class MainFragment: Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                MyApp(Modifier.fillMaxSize())
+                MyApp(Modifier.fillMaxSize(), viewModel)
             }
         }
     }
