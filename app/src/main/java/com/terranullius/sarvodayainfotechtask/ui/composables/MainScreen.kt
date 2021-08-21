@@ -182,5 +182,7 @@ fun ProfileComposable(
 private fun navigateRegister(
     navController: NavHostController
 ){
-    navController.navigate(Screen.Register.route)
+    navController.navigate(Screen.Register.route){
+        launchSingleTop = true
+    }
 }

@@ -59,6 +59,7 @@ fun LoginScreen(
                    if (it) navController.navigate(Screen.MainScreen.route){
                        popUpTo(Screen.Login.route){
                            this.inclusive = true
+                           launchSingleTop = true
                        }
                    }
                 }
@@ -175,7 +176,9 @@ private fun validateFields(phoneNumberOrEmail: String, password: String, context
 }
 
 private fun navigateRegister(navController: NavHostController) {
-    navController.navigate(Screen.Register.route)
+    navController.navigate(Screen.Register.route){
+        launchSingleTop = true
+    }
 }
 
 
