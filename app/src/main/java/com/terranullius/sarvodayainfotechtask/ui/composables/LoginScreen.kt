@@ -170,7 +170,7 @@ private fun validateFields(phoneNumberOrEmail: String, password: String, context
     } else true
 }
 
-fun navigateRegister(navController: NavHostController) {
+private fun navigateRegister(navController: NavHostController) {
     navController.navigate(Screen.Register.route)
 }
 

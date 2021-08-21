@@ -22,16 +22,28 @@ import com.terranullius.sarvodayainfotechtask.ui.composables.components.TaskButt
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.SarvodayaInfotechTaskTheme
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.buttonHeight
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
+import com.terranullius.sarvodayainfotechtask.util.Resource
 import com.terranullius.sarvodayainfotechtask.util.Screen
 import com.terranullius.sarvodayainfotechtask.util.showToast
 
 @androidx.compose.runtime.Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    user: User? = null,
     navController: NavHostController,
     viewModel: MainViewModel?
 ) {
+    var user by remember {
+        mutableStateOf<User?>(null)
+    }
+
+    var userWrapper = viewModel?.currentUser?.collectAsState()
+
+    user = when(userWrapper?.value){
+
+        is Resource.Success -> (userWrapper.value as Resource.Success).data
+        else -> null
+    }
+
     Column(modifier) {
 
         val context = LocalContext.current
@@ -68,7 +80,7 @@ fun RegisterScreen(
             modifier = Modifier.weight(0.15f, true),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = "Register", style = MaterialTheme.typography.h4)
+            Text(text = if (user == null)"Register" else "Update", style = MaterialTheme.typography.h4)
         }
 
         Column(Modifier.weight(0.85f)) {
@@ -125,7 +137,7 @@ fun RegisterScreen(
                         navController
                     )
                 }) {
-                Text(text = "REGISTER")
+                Text(text = if (user == null) "REGISTER" else "UPDATE")
             }
 
         }

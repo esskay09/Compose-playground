@@ -88,6 +88,9 @@ fun MainScreenSuccessContent(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
                 //TODO UPDATE PROFILE
+                navigateRegister(
+                    navController = navController
+                )
             }
 
             Spacer(modifier = Modifier.height(18.dp))
@@ -174,4 +177,10 @@ fun ProfileComposable(
         )
         Text(text = "Welcome $name", Modifier.align(Alignment.CenterHorizontally))
     }
+}
+
+private fun navigateRegister(
+    navController: NavHostController
+){
+    navController.navigate(Screen.Register.route)
 }
