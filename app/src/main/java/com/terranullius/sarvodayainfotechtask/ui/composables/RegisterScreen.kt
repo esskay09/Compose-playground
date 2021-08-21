@@ -1,6 +1,7 @@
 package com.terranullius.sarvodayainfotechtask.ui.composables
 
 import android.content.Context
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
@@ -302,7 +304,9 @@ fun RegisterItem(
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
             leadingIcon = {
-                   Icon(imageVector = leadingIcon, contentDescription = "icon", tint = MaterialTheme.colors.onSurface)
+                   Icon(imageVector = leadingIcon, contentDescription = "icon", tint =
+                   if (isSystemInDarkTheme()) Color.White
+                   else Color.DarkGray)
             },
             value = textFieldValue,
             keyboardType = keyboardType,

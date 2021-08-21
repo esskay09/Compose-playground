@@ -20,11 +20,13 @@ content: @Composable () -> Unit) {
 
     Button(
         onClick = onClick ,
-        modifier = modifier,
-        colors = ButtonDefaults.buttonColors(
+        modifier = modifier
+      /*  colors = ButtonDefaults.buttonColors(
             backgroundColor = blue500,
             contentColor = MaterialTheme.colors.onPrimary
-        )) {
+        )*/
+
+    ) {
         content()
     }
 }
