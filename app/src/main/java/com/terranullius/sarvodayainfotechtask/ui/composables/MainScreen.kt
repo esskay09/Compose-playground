@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -18,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.terranullius.sarvodayainfotechtask.data.User
 import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
-import com.terranullius.sarvodayainfotechtask.ui.composables.programScreens.SumProgramScreen
+import com.terranullius.sarvodayainfotechtask.ui.composables.programScreens.*
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.buttonHeight
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
 import com.terranullius.sarvodayainfotechtask.util.Program
@@ -69,13 +70,16 @@ fun MainScreenSuccessContent(
 
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
+        sheetPeekHeight = 1.dp,
+        sheetElevation = 3.dp,
+        sheetShape = RoundedCornerShape(16.dp),
         sheetContent = {
-        BottomSheetContent(selectedProgram = selectedProgram)
-    }) {
+            BottomSheetContent(selectedProgram = selectedProgram)
+        }) {
 
-            val coroutineScope = rememberCoroutineScope()
+        val coroutineScope = rememberCoroutineScope()
 
-            Column(modifier = modifier.padding(it)) {
+        Column(modifier = modifier.padding(it)) {
 
             Spacer(modifier = Modifier.height(18.dp))
 
@@ -85,6 +89,8 @@ fun MainScreenSuccessContent(
             ) {
                 //TODO UPDATE PROFILE
             }
+
+            Spacer(modifier = Modifier.height(18.dp))
 
             LazyColumn(Modifier.fillMaxSize()) {
 
@@ -102,23 +108,29 @@ fun MainScreenSuccessContent(
                 }
             }
         }
-
-
     }
 }
 
 @Composable
 fun BottomSheetContent(selectedProgram: Program) {
-    when(selectedProgram.screen){
-        Screen.Sum -> {
-            SumProgramScreen(selectedProgram)
-        }
-        else ->{
 
+    val bottomSheetPadding = 8.dp
+
+    when (selectedProgram.screen) {
+        Screen.Sum -> SumProgramScreen(Modifier.padding(bottomSheetPadding), selectedProgram)
+        Screen.Product -> ProductScreen(Modifier.padding(bottomSheetPadding), selectedProgram)
+        Screen.Circle -> CircleScreen(Modifier.padding(bottomSheetPadding), selectedProgram)
+        Screen.EvenOdd -> EvenOddScreen(Modifier.padding(bottomSheetPadding), selectedProgram)
+        Screen.Factorial -> FactorialScreen(Modifier.padding(bottomSheetPadding), selectedProgram)
+        Screen.Grade -> GradeScreen(Modifier.padding(bottomSheetPadding), selectedProgram)
+        Screen.Maximum -> MaxScreen(Modifier.padding(bottomSheetPadding), selectedProgram)
+        Screen.Minimum -> Mincreen(Modifier.padding(bottomSheetPadding), selectedProgram)
+        Screen.Prime -> PrimeScreen(Modifier.padding(bottomSheetPadding), selectedProgram)
+        Screen.Vote -> VoteScreen(Modifier.padding(bottomSheetPadding), selectedProgram)
+        else -> {
         }
     }
 }
-
 
 
 @Composable
