@@ -12,6 +12,7 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUpdateUser(user: User)
 
+
     @Query("SELECT * FROM users WHERE email = :email")
     suspend fun searchByEmail(email: String): List<User>
 

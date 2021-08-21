@@ -76,9 +76,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun register(name: String, email: String, phoneNumber: String, password: String) {
+    fun registerOrUpdate(id: Int? ,name: String, email: String, phoneNumber: String, password: String) {
 
-        val user = User(
+        val user = id?.let {
+            User(
+                id = it,
+                name = name,
+                email = email,
+                number = phoneNumber,
+                gender = "",
+                password = password
+            )
+        } ?:  User(
             name = name,
             email = email,
             number = phoneNumber,

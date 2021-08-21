@@ -1,9 +1,7 @@
 package com.terranullius.sarvodayainfotechtask.ui.composables
 
-import android.app.Application
 import android.content.Context
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -38,7 +36,7 @@ fun RegisterScreen(
 
     var userWrapper = viewModel?.currentUser?.collectAsState()
 
-    user = when(userWrapper?.value){
+    user = when (userWrapper?.value) {
 
         is Resource.Success -> (userWrapper.value as Resource.Success).data
         else -> null
@@ -80,7 +78,10 @@ fun RegisterScreen(
             modifier = Modifier.weight(0.15f, true),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = if (user == null)"Register" else "Update", style = MaterialTheme.typography.h4)
+            Text(
+                text = if (user == null) "Register" else "Update",
+                style = MaterialTheme.typography.h4
+            )
         }
 
         Column(Modifier.weight(0.85f)) {
@@ -126,7 +127,20 @@ fun RegisterScreen(
                     .fillMaxWidth(),
                 isContinuable = isContinuable,
                 onClick = {
-                    register(
+                    user?.let {
+                        register(
+                            it.id,
+                            name,
+                            email,
+                            phoneNumber,
+                            password,
+                            confirmPassword,
+                            context,
+                            viewModel = viewModel!!,
+                            navController
+                        )
+                    } ?: register(
+                        null,
                         name,
                         email,
                         phoneNumber,
@@ -136,6 +150,7 @@ fun RegisterScreen(
                         viewModel = viewModel!!,
                         navController
                     )
+
                 }) {
                 Text(text = if (user == null) "REGISTER" else "UPDATE")
             }
@@ -146,6 +161,7 @@ fun RegisterScreen(
 }
 
 fun register(
+    id: Int? = null,
     name: String,
     email: String,
     phoneNumber: String,
@@ -164,7 +180,8 @@ fun register(
             context = context
         )
     ) {
-        viewModel.register(
+        viewModel.registerOrUpdate(
+            id = id,
             name = name,
             email = email,
             phoneNumber = phoneNumber,
@@ -175,8 +192,8 @@ fun register(
 }
 
 private fun navigateMainScreen(navController: NavHostController) {
-    navController.navigate(Screen.MainScreen.route){
-        popUpTo(Screen.Register.route){
+    navController.navigate(Screen.MainScreen.route) {
+        popUpTo(Screen.Register.route) {
             this.inclusive = true
         }
     }
@@ -251,6 +268,10 @@ fun RegisterItem(
 @Composable
 fun RegisterPrev() {
     SarvodayaInfotechTaskTheme() {
-        RegisterScreen(Modifier.fillMaxSize(), navController = rememberNavController(), viewModel = null)
+        RegisterScreen(
+            Modifier.fillMaxSize(),
+            navController = rememberNavController(),
+            viewModel = null
+        )
     }
 }
