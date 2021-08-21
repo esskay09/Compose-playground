@@ -12,6 +12,9 @@ val Teal200 = Color(0xFF03DAC5)
 val orange200 = Color(0xFFff7961)
 val orange500 = Color(0xFFf44336)
 
+val blue500 = Color(0xFF0A449B)
+val blue200 = Color(0xFF9FA8DA)
+
 val lightBlueHeadline = Color(0xF07E91FF)
 
 val primaryDisabled = Color(0xFF9D5BFC)

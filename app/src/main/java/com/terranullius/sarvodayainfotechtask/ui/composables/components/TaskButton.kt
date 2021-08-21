@@ -20,7 +20,8 @@ fun TaskButton(
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = if (!isContinuable.value) primaryDisabled else MaterialTheme.colors.primary
+            backgroundColor = if (!isContinuable.value) primaryDisabled else MaterialTheme.colors.primary,
+            contentColor = MaterialTheme.colors.onPrimary
         ),
         onClick = onClick
     ){

@@ -284,7 +284,7 @@ fun RegisterItem(
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
             leadingIcon = {
-                   Icon(imageVector = leadingIcon, contentDescription = "icon")
+                   Icon(imageVector = leadingIcon, contentDescription = "icon", tint = MaterialTheme.colors.onBackground)
             },
             value = textFieldValue,
             keyboardType = keyboardType,

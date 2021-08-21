@@ -23,6 +23,7 @@ import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
 import com.terranullius.sarvodayainfotechtask.ui.composables.components.ProgramButton
 import com.terranullius.sarvodayainfotechtask.ui.composables.programScreens.*
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.buttonHeight
+import com.terranullius.sarvodayainfotechtask.ui.composables.theme.lightBlueHeadline
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
 import com.terranullius.sarvodayainfotechtask.util.Program
 import com.terranullius.sarvodayainfotechtask.util.Resource
@@ -191,7 +192,7 @@ fun ProfileComposable(
         Row( Modifier.align(Alignment.CenterHorizontally)) {
             Text(text = "Welcome $name")
             Spacer(modifier = Modifier.width(5.dp))
-            Icon(Icons.Default.Edit , contentDescription = "edit", tint = MaterialTheme.colors.onBackground)
+            Icon(Icons.Default.Edit , contentDescription = "edit", tint = lightBlueHeadline)
         }
     }
 }
