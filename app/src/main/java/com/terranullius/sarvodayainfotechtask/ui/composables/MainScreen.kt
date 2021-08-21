@@ -22,6 +22,7 @@ import com.terranullius.sarvodayainfotechtask.data.User
 import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
 import com.terranullius.sarvodayainfotechtask.ui.composables.components.ProgramButton
 import com.terranullius.sarvodayainfotechtask.ui.composables.programScreens.*
+import com.terranullius.sarvodayainfotechtask.ui.composables.theme.bottomSheetColor
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.buttonHeight
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.lightBlueHeadline
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
@@ -74,8 +75,9 @@ fun MainScreenSuccessContent(
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
         sheetPeekHeight = 1.dp,
-        sheetElevation = 3.dp,
-        sheetShape = RoundedCornerShape(16.dp),
+        sheetElevation = 8.dp,
+        sheetShape = RoundedCornerShape(24.dp),
+        sheetBackgroundColor = bottomSheetColor,
         sheetContent = {
             BottomSheetContent(selectedProgram = selectedProgram)
         }) {

@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.blue200
+import com.terranullius.sarvodayainfotechtask.ui.composables.theme.blue500
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.lightBlueHeadline
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.orange500
 
@@ -21,7 +22,7 @@ content: @Composable () -> Unit) {
         onClick = onClick ,
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = blue200,
+            backgroundColor = blue500,
             contentColor = MaterialTheme.colors.onPrimary
         )) {
         content()

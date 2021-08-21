@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.terranullius.sarvodayainfotechtask.util.Gender
 
 @Composable
-fun OrientationSelector(
+fun GenderSelector(
     modifier: Modifier = Modifier,
     gender: Gender = Gender.FEMALE,
     onClick: (Gender) -> Unit ={}
@@ -26,7 +26,7 @@ fun OrientationSelector(
                 .offset(x = 20.dp)
                 .padding(vertical = 6.dp),
             colors = if (gender == Gender.MALE) ButtonDefaults.outlinedButtonColors(
-                backgroundColor = MaterialTheme.colors.primary,
+                backgroundColor = MaterialTheme.colors.primary.copy(alpha = 0.7f),
                 contentColor = MaterialTheme.colors.onPrimary
             )
             else ButtonDefaults.outlinedButtonColors()
@@ -41,14 +41,14 @@ fun OrientationSelector(
                 .offset(x = (-20).dp)
                 .padding(vertical = 6.dp),
             colors = if (gender == Gender.FEMALE) ButtonDefaults.outlinedButtonColors(
-                backgroundColor = MaterialTheme.colors.primary,
+                backgroundColor = MaterialTheme.colors.primary.copy(alpha = 0.7f),
                 contentColor = MaterialTheme.colors.onPrimary
             )
             else ButtonDefaults.outlinedButtonColors()
         )
         {
             Spacer(modifier = Modifier.width(10.dp))
-            Text(text = "Vertical")
+            Text(text = "Female")
         }
     }
 }

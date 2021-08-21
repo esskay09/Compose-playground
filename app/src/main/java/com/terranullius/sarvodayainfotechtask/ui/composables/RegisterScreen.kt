@@ -23,10 +23,12 @@ import androidx.navigation.compose.rememberNavController
 import com.terranullius.sarvodayainfotechtask.data.User
 import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
 import com.terranullius.sarvodayainfotechtask.ui.composables.components.EditTextField
+import com.terranullius.sarvodayainfotechtask.ui.composables.components.GenderSelector
 import com.terranullius.sarvodayainfotechtask.ui.composables.components.TaskButton
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.SarvodayaInfotechTaskTheme
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.buttonHeight
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
+import com.terranullius.sarvodayainfotechtask.util.Gender
 import com.terranullius.sarvodayainfotechtask.util.Resource
 import com.terranullius.sarvodayainfotechtask.util.Screen
 import com.terranullius.sarvodayainfotechtask.util.showToast
@@ -70,7 +72,7 @@ fun RegisterScreen(
         }
 
         var gender by remember {
-            mutableStateOf(user?.gender ?: "")
+            mutableStateOf(user?.gender ?: Gender.FEMALE.value)
         }
 
         var password by remember {
@@ -131,6 +133,18 @@ fun RegisterScreen(
                 confirmPassword = it
             }
 
+            Spacer(modifier = Modifier.height(textFieldsSpace))
+
+            GenderSelector(
+                gender = Gender.values().find {
+                    gender == it.value
+                } ?: Gender.FEMALE,
+                modifier = Modifier.align(Alignment.End),
+                onClick = {
+                    gender = it.value
+                }
+            )
+
 
             Spacer(modifier = Modifier.height(50.dp))
             TaskButton(
@@ -145,6 +159,7 @@ fun RegisterScreen(
                             name,
                             email,
                             phoneNumber,
+                            gender,
                             password,
                             confirmPassword,
                             context,
@@ -156,6 +171,7 @@ fun RegisterScreen(
                         name,
                         email,
                         phoneNumber,
+                        gender,
                         password,
                         confirmPassword,
                         context,
@@ -199,6 +215,7 @@ fun register(
     name: String,
     email: String,
     phoneNumber: String,
+    gender: String,
     password: String,
     confirmPassword: String,
     context: Context,
@@ -219,6 +236,7 @@ fun register(
             name = name,
             email = email,
             phoneNumber = phoneNumber,
+            gender = gender,
             password = password,
         )
         navigateMainScreen(navController)
@@ -284,7 +302,7 @@ fun RegisterItem(
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
             leadingIcon = {
-                   Icon(imageVector = leadingIcon, contentDescription = "icon", tint = MaterialTheme.colors.onBackground)
+                   Icon(imageVector = leadingIcon, contentDescription = "icon", tint = MaterialTheme.colors.onSurface)
             },
             value = textFieldValue,
             keyboardType = keyboardType,
