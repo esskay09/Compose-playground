@@ -97,6 +97,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
         viewModelScope.launch {
             insertUpdateUser(user)
+            _currentUser.value = Resource.Success(
+                user
+            )
         }
     }
 }
