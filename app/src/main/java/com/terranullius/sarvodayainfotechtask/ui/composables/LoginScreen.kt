@@ -6,6 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Password
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
@@ -112,6 +115,9 @@ fun LoginScreen(
 
             EditTextField(
                 modifier = Modifier.fillMaxWidth(),
+                leadingIcon = {
+                              Icon(imageVector = Icons.Default.Email, contentDescription = "mail")
+                },
                 label = {
                     Text(text = "Email/Phone")
                 },
@@ -123,6 +129,9 @@ fun LoginScreen(
             }
             EditTextField(
                 modifier = Modifier.fillMaxWidth(),
+                leadingIcon = {
+                    Icon(imageVector = Icons.Default.Password, contentDescription = "pass")
+                },
                 label = {
                     Text(text = "Password")
                 },
