@@ -56,7 +56,11 @@ fun LoginScreen(
         launch {
             viewModel.navigateLoginToMainScreen.collectLatest {
                 it.getContentIfNotHandled()?.let {
-                   if (it) navController.navigate(Screen.MainScreen.route)
+                   if (it) navController.navigate(Screen.MainScreen.route){
+                       popUpTo(Screen.Login.route){
+                           this.inclusive = true
+                       }
+                   }
                 }
             }
         }

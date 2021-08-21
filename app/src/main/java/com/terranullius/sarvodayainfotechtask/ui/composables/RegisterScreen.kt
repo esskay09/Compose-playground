@@ -175,7 +175,11 @@ fun register(
 }
 
 private fun navigateMainScreen(navController: NavHostController) {
-    navController.navigate(Screen.MainScreen.route)
+    navController.navigate(Screen.MainScreen.route){
+        popUpTo(Screen.Register.route){
+            this.inclusive = true
+        }
+    }
 }
 
 private fun validateFields(

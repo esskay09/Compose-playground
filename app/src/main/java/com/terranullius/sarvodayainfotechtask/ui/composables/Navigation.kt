@@ -26,7 +26,7 @@ fun Navigation(modifier: Modifier = Modifier, viewModel: MainViewModel) {
             LoginScreen(navController, Modifier.fillMaxSize(), viewModel)
         }
         composable(Screen.Register.route){
-            RegisterScreen(Modifier.fillMaxSize(), null, navController, viewModel)
+            RegisterScreen(Modifier.fillMaxSize(),  navController, viewModel)
         }
         composable(Screen.MainScreen.route){
             MainScreen(Modifier.fillMaxSize(), navController, viewModel)
