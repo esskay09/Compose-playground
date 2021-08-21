@@ -53,7 +53,7 @@ fun ProductScreen(
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
             label = {
-            .    Text(text = "Second Number")
+                Text(text = "Second Number")
             },
             value = num2String,
             onValueChange = {
