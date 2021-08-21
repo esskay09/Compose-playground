@@ -157,7 +157,7 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(6.dp))
 
-            if (user == null) TaskButton(
+            if (user != null) TaskButton(
                 modifier = Modifier
                     .height(buttonHeight)
                     .fillMaxWidth(),
@@ -175,6 +175,7 @@ fun RegisterScreen(
 
 fun logout(navController: NavHostController) {
     navController.navigate(Screen.Login.route) {
+        launchSingleTop = true
         popUpTo(Screen.Register.route) {
             inclusive = true
         }
