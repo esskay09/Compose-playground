@@ -2,11 +2,18 @@ package com.terranullius.sarvodayainfotechtask.ui.composables
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -89,24 +96,28 @@ fun RegisterScreen(
             RegisterItem(
                 label = "Name",
                 initialText = name,
+                leadingIcon = Icons.Default.Person
             ) {
                 name = it
             }
             RegisterItem(
                 label = "10 digit Phone Number",
                 initialText = phoneNumber,
+                leadingIcon = Icons.Default.Phone
             ) {
                 phoneNumber = it
             }
             RegisterItem(
                 label = "Email",
                 initialText = email,
+                leadingIcon = Icons.Default.Email
             ) {
                 email = it
             }
             RegisterItem(
                 label = "Password",
                 initialText = password,
+                leadingIcon = Icons.Default.Password,
                 keyboardType = KeyboardType.Password
             ) {
                 password = it
@@ -115,6 +126,7 @@ fun RegisterScreen(
             RegisterItem(
                 label = "Confirm Password",
                 initialText = confirmPassword,
+                leadingIcon = Icons.Default.Password
             ) {
                 confirmPassword = it
             }
@@ -255,6 +267,7 @@ fun isAnyArgEmpty(vararg arg: String): Boolean {
 fun RegisterItem(
     modifier: Modifier = Modifier.fillMaxWidth(),
     initialText: String = "",
+    leadingIcon : ImageVector,
     label: String,
     keyboardType: KeyboardType = KeyboardType.Text,
     isError: MutableState<Boolean> = mutableStateOf(false),
@@ -270,6 +283,9 @@ fun RegisterItem(
         Spacer(modifier = Modifier.height(textFieldsSpace))
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
+            leadingIcon = {
+                   Icon(imageVector = leadingIcon, contentDescription = "icon")
+            },
             value = textFieldValue,
             keyboardType = keyboardType,
             onValueChange = { newValue ->

@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.terranullius.sarvodayainfotechtask.data.User
 import com.terranullius.sarvodayainfotechtask.ui.MainViewModel
+import com.terranullius.sarvodayainfotechtask.ui.composables.components.ProgramButton
 import com.terranullius.sarvodayainfotechtask.ui.composables.programScreens.*
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.buttonHeight
 import com.terranullius.sarvodayainfotechtask.ui.composables.theme.textFieldsSpace
@@ -97,17 +99,28 @@ fun MainScreenSuccessContent(
 
             LazyColumn(Modifier.fillMaxSize()) {
 
-                itemsIndexed(
-                    programList
-                ) { index, item ->
+                val chunkedProgramList = programList.chunked(2)
 
-                    ProgramItem(name = item.screen.route, onClick = {
-                        //TODO
-                        selectedProgram = item
-                        coroutineScope.launch {
-                            bottomSheetScaffoldState.bottomSheetState.expand()
+                itemsIndexed(
+                    chunkedProgramList
+                ) { _, chunkedItem ->
+
+                    Row(Modifier.fillMaxWidth()) {
+                        for(item in chunkedItem) {
+                            ProgramItem(
+                                name = item.screen.route,
+                                modifier = Modifier
+                                    .padding(3.dp)
+                                    .weight(1f),
+                                onClick = {
+                                selectedProgram = item
+                                coroutineScope.launch {
+                                    bottomSheetScaffoldState.bottomSheetState.expand()
+                                }
+                            })
                         }
-                    })
+                    }
+
                 }
             }
         }
@@ -144,10 +157,10 @@ fun ProgramItem(
 ) {
     Column(modifier = modifier) {
 
-        Button(
+        ProgramButton(
             modifier =
             Modifier
-                .height(buttonHeight)
+                .height(buttonHeight.times(1.5f))
                 .fillMaxWidth(),
             onClick = {
                 onClick(name)
@@ -172,10 +185,14 @@ fun ProfileComposable(
             painter = rememberVectorPainter(image = Icons.Default.Person),
             contentDescription = "profile",
             modifier = Modifier
-                .size(100.dp)
+                .size(150.dp)
                 .clip(CircleShape)
         )
-        Text(text = "Welcome $name", Modifier.align(Alignment.CenterHorizontally))
+        Row( Modifier.align(Alignment.CenterHorizontally)) {
+            Text(text = "Welcome $name")
+            Spacer(modifier = Modifier.width(5.dp))
+            Icon(Icons.Default.Edit , contentDescription = "edit", tint = MaterialTheme.colors.onBackground)
+        }
     }
 }
 

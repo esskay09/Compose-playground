@@ -36,7 +36,7 @@ fun PrimeScreen(
             },
             value = numString,
             onValueChange = {
-               numString
+               numString = it
             },
             keyboardType = KeyboardType.Number
         ) {}

@@ -14,12 +14,12 @@ fun VoteScreen(
     modifier: Modifier = Modifier,
     program: Program
 ) {
-    var agetring by remember {
+    var ageString by remember {
         mutableStateOf("")
     }
 
-    var age by remember(agetring) {
-        mutableStateOf(agetring.toIntOrNull() ?: 0)
+    var age by remember(ageString) {
+        mutableStateOf(ageString.toIntOrNull() ?: 0)
     }
 
     GenericProgramScreen(
@@ -34,9 +34,9 @@ fun VoteScreen(
             label = {
                 Text(text = "Age")
             },
-            value = agetring,
+            value = ageString,
             onValueChange = {
-               agetring
+               ageString = it
             },
             keyboardType = KeyboardType.Number
         ) {}
