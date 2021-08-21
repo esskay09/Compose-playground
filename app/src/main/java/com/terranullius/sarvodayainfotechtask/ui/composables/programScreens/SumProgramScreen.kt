@@ -3,6 +3,7 @@ package com.terranullius.sarvodayainfotechtask.ui.composables.programScreens
 import android.text.TextUtils
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,12 +20,22 @@ fun SumProgramScreen(
     program: Program
 ) {
 
-    var num1 by remember {
-        mutableStateOf(0f)
+
+    var num1String by remember {
+        mutableStateOf("")
     }
 
-    var num2 by remember {
-        mutableStateOf(0f)
+    var num2String by remember {
+        mutableStateOf("")
+    }
+
+
+    var num1 by remember(num1String) {
+        mutableStateOf(num1String.toFloatOrNull() ?: 0f)
+    }
+
+    var num2 by remember(num2String) {
+        mutableStateOf(num2String.toFloatOrNull()  ?: 0f)
     }
 
     GenericProgramScreen(
@@ -36,24 +47,26 @@ fun SumProgramScreen(
 
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = if (num1.equals(0f)) "" else num1.toString(),
+            value = num1String,
             onValueChange = {
-                if (it.toFloatOrNull() != null){
-                    num1 = it.toFloat()
-                }
+                num1String = it
             },
-            keyboardType = KeyboardType.Number
+            keyboardType = KeyboardType.Number,
+            label = {
+                Text(text = "First Number")
+            }
         ) {}
 
            EditTextField(
                modifier = Modifier.fillMaxWidth(),
-               value = if (num2.equals(0f)) "" else num2.toString(),
+               value = num2String,
                onValueChange = {
-                   if (it.toFloatOrNull() != null){
-                       num2 = it.toFloat()
-                   }
+                  num2String = it
                },
-               keyboardType = KeyboardType.Number
+               keyboardType = KeyboardType.Number,
+               label = {
+                   Text(text = "Second Number")
+               }
         ) {}
 
 

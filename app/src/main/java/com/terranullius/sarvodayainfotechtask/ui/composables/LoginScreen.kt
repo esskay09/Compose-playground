@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
@@ -125,6 +126,7 @@ fun LoginScreen(
                 label = {
                     Text(text = "Password")
                 },
+                keyboardType = KeyboardType.Password,
                 value = password,
                 onValueChange = {
                     password = it
