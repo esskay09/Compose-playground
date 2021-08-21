@@ -1,6 +1,7 @@
 package com.terranullius.sarvodayainfotechtask.ui.composables.programScreens
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -13,8 +14,12 @@ fun CircleScreen(
     modifier: Modifier = Modifier,
     program: Program
 ) {
-    var radius by remember {
-        mutableStateOf(0f)
+    var radiusString by remember {
+        mutableStateOf("")
+    }
+
+    var radius by remember(radiusString) {
+        mutableStateOf(radiusString.toFloatOrNull() ?: 0f)
     }
 
     GenericProgramScreen(
@@ -22,16 +27,20 @@ fun CircleScreen(
         ,
         modifier = modifier,
         onDone = {
-            "A: ${Math.PI.times(radius.pow(2))}  C: ${Math.PI.times(2).times(radius)}"
+            val area = Math.PI.times(radius.pow(2))
+            val circum = Math.PI.times(2).times(radius)
+
+            "A: ${"%.2f".format(area)}  C: ${"%.2f".format(circum)}"
         }) {
 
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = if (radius.equals(0f)) "" else radius.toString(),
+            label = {
+                Text(text = "Radius")
+            },
+            value = radiusString,
             onValueChange = {
-                if (it.toFloatOrNull() != null){
-                    radius = it.toFloat()
-                }
+                radiusString = it
             },
             keyboardType = KeyboardType.Number
         ) {}

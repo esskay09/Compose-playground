@@ -1,6 +1,7 @@
 package com.terranullius.sarvodayainfotechtask.ui.composables.programScreens
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -12,24 +13,29 @@ fun FactorialScreen(
     modifier: Modifier = Modifier,
     program: Program
 ) {
-    var number by remember {
-        mutableStateOf(0)
+    var numString by remember {
+        mutableStateOf("")
+    }
+
+    var num by remember(numString) {
+        mutableStateOf(numString.toIntOrNull() ?: 0)
     }
 
     GenericProgramScreen(
         program = program,
         modifier = modifier,
         onDone = {
-            Factorial(number).toString()
+            Factorial(num).toString()
         }) {
 
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = if (number.equals(0)) "" else number.toString(),
+            label = {
+                Text(text = "Number")
+            },
+            value = numString,
             onValueChange = {
-                if (it.toIntOrNull() != null){
-                    number = it.toInt()
-                }
+              numString = it
             },
             keyboardType = KeyboardType.Number
         ) {}

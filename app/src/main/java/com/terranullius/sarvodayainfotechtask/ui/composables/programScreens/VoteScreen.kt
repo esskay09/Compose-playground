@@ -1,6 +1,7 @@
 package com.terranullius.sarvodayainfotechtask.ui.composables.programScreens
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -13,8 +14,12 @@ fun VoteScreen(
     modifier: Modifier = Modifier,
     program: Program
 ) {
-    var age by remember {
-        mutableStateOf(0)
+    var agetring by remember {
+        mutableStateOf("")
+    }
+
+    var age by remember(agetring) {
+        mutableStateOf(agetring.toIntOrNull() ?: 0)
     }
 
     GenericProgramScreen(
@@ -26,11 +31,12 @@ fun VoteScreen(
 
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = if (age == 0) "" else age.toString(),
+            label = {
+                Text(text = "Age")
+            },
+            value = agetring,
             onValueChange = {
-                if (it.toIntOrNull() != null){
-                    age = it.toInt()
-                }
+               agetring
             },
             keyboardType = KeyboardType.Number
         ) {}

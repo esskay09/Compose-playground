@@ -1,6 +1,7 @@
 package com.terranullius.sarvodayainfotechtask.ui.composables.programScreens
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -12,12 +13,22 @@ fun Mincreen(
     modifier: Modifier = Modifier,
     program: Program
 ) {
-    var num1 by remember {
-        mutableStateOf(0f)
+
+    var num1String by remember {
+        mutableStateOf("")
     }
 
-    var num2 by remember {
-        mutableStateOf(0f)
+    var num2String by remember {
+        mutableStateOf("")
+    }
+
+
+    var num1 by remember(num1String) {
+        mutableStateOf(num1String.toFloatOrNull() ?: 0f)
+    }
+
+    var num2 by remember(num2String) {
+        mutableStateOf(num2String.toFloatOrNull()  ?: 0f)
     }
 
     GenericProgramScreen(
@@ -30,22 +41,24 @@ fun Mincreen(
 
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = if (num1.equals(0f)) "" else num1.toString(),
+            label = {
+                Text(text = "Fist Number")
+            },
+            value = num1String,
             onValueChange = {
-                if (it.toFloatOrNull() != null){
-                    num1 = it.toFloat()
-                }
+                num1String = it
             },
             keyboardType = KeyboardType.Number
         ) {}
 
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = if (num2.equals(0f)) "" else num2.toString(),
+            label = {
+                Text(text = "Second Number")
+            },
+            value = num2String,
             onValueChange = {
-                if (it.toFloatOrNull() != null){
-                    num2 = it.toFloat()
-                }
+                num2String = it
             },
             keyboardType = KeyboardType.Number
         ) {}

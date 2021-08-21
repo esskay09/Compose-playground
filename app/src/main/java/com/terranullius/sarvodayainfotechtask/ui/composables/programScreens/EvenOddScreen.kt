@@ -1,6 +1,7 @@
 package com.terranullius.sarvodayainfotechtask.ui.composables.programScreens
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -12,9 +13,15 @@ fun EvenOddScreen(
     modifier: Modifier = Modifier,
     program: Program
 ) {
-    var num by remember {
-        mutableStateOf(0)
+
+    var numString by remember {
+        mutableStateOf("")
     }
+
+    var num by remember(numString) {
+        mutableStateOf(numString.toIntOrNull() ?: 0)
+    }
+
 
     GenericProgramScreen(
         program = program
@@ -26,11 +33,12 @@ fun EvenOddScreen(
 
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = if (num == 0) "" else num.toString(),
+            label = {
+                Text(text = "Number")
+            },
+            value = numString,
             onValueChange = {
-                if (it.toFloatOrNull() != null){
-                    num = it.toInt()
-                }
+                numString = it
             },
             keyboardType = KeyboardType.Number
         ) {}

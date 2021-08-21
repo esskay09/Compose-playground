@@ -1,6 +1,7 @@
 package com.terranullius.sarvodayainfotechtask.ui.composables.programScreens
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -12,8 +13,12 @@ fun GradeScreen(
     modifier: Modifier = Modifier,
     program: Program
 ) {
-    var score by remember {
-        mutableStateOf(0f)
+    var scoreString by remember {
+        mutableStateOf("")
+    }
+
+    var score by remember(scoreString) {
+        mutableStateOf(scoreString.toFloatOrNull() ?: 0f)
     }
 
     GenericProgramScreen(
@@ -25,11 +30,12 @@ fun GradeScreen(
 
         EditTextField(
             modifier = Modifier.fillMaxWidth(),
+            label = {
+                Text(text = "Score")
+            },
             value = if (score.equals(0f)) "" else score.toString(),
             onValueChange = {
-                if (it.toFloatOrNull() != null) {
-                    score = it.toFloat()
-                }
+               scoreString = it
             },
             keyboardType = KeyboardType.Number
         ) {}
