@@ -155,8 +155,29 @@ fun RegisterScreen(
                 Text(text = if (user == null) "REGISTER" else "UPDATE")
             }
 
+            Spacer(modifier = Modifier.height(6.dp))
+
+            if (user == null) TaskButton(
+                modifier = Modifier
+                    .height(buttonHeight)
+                    .fillMaxWidth(),
+                isContinuable = isContinuable,
+                onClick = {
+                    logout(navController)
+                }) {
+                Text(text = "LOGOUT")
+            }
+
         }
 
+    }
+}
+
+fun logout(navController: NavHostController) {
+    navController.navigate(Screen.Login.route) {
+        popUpTo(Screen.Register.route) {
+            inclusive = true
+        }
     }
 }
 
